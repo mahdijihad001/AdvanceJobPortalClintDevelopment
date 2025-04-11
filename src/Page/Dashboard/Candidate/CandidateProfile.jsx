@@ -15,8 +15,7 @@ const CandidateProfile = () => {
   return (
     <div className='p-2 md:p-5'>
       <div>
-        <h1 className='text-3xl font-medium leading-5 text-gray-500'>My Profile!</h1>
-        <h2 className='text-[20px] font-medium mt-[25px] text-gray-600'>Ready to jump back in?</h2>
+        <h1 className='text-3xl font-medium leading-5 text-gray-500'>Update My Profile</h1>
       </div>
       {/* ------------------------------------- */}
       {/* Candidate Profile */}

@@ -14,7 +14,7 @@ const CandidateBookmark = () => {
                 <h2 className='text-[20px] font-medium mt-[25px] text-gray-600'>Ready to jump back in?</h2>
             </div>
 
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto shadow bg-white rounded-md p-5">
                 <table className='w-full border-collapse'>
                     <thead className='bg-[#f5f7fc] mb-5 py-4'>
                         <tr className='text-blue-600/50 font-bold text-xl'>

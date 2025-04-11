@@ -14,7 +14,7 @@ const AppliedJobs = () => {
                 <h2 className='text-lg font-medium mt-4 text-gray-600'>Ready to jump back in?</h2>
             </div>
 
-            <div className="mt-6">
+            <div className="mt-6 shadow bg-white rounded-md p-5">
                 <div className="flex justify-between items-center mb-4">
                     <h1 className="text-2xl font-bold text-gray-800">My Applied Jobs</h1>
                 </div>

@@ -14,7 +14,7 @@ const ManageJobs = () => {
         <h1 className='text-3xl font-medium leading-5 text-gray-500'>Manage My All Jobs!</h1>
       </div>
 
-      <div className="mt-6">
+      <div className="mt-6 shadow bg-white rounded-md p-5">
         <div className="overflow-x-auto">
           <table className='w-full border-collapse'>
             <thead className='bg-[#f5f7fc] mb-5 py-4'>

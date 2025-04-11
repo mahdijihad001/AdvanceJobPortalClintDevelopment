@@ -3,7 +3,7 @@ import { Link, Outlet } from 'react-router'
 import logo from "../../../assets/logo.svg"
 import { CiBookmark, CiLogin } from 'react-icons/ci'
 import { FaArtstation, FaHome, FaUser } from 'react-icons/fa'
-import { MdOutlineKeyboardDoubleArrowRight } from 'react-icons/md'
+import { MdCreateNewFolder, MdOutlineKeyboardDoubleArrowRight } from 'react-icons/md'
 import { IoBagCheckOutline } from 'react-icons/io5'
 import { RiFileList2Fill } from 'react-icons/ri'
 import { PiReadCvLogoFill } from 'react-icons/pi'
@@ -13,8 +13,8 @@ const Layout = () => {
 
     const candidate = [
         { name: "Dashboard", icon: FaHome, path: "/dashboard" },
-        { name: "My Profile", icon: FaUser, path: "/dashboard/candifateProfile" },
-        { name: "My Resume", icon: PiReadCvLogoFill, path: "" },
+        { name: "My Profile", icon: FaUser, path: `/dashboard/candifateProfile/${10}` },
+        { name: "My Resume", icon: PiReadCvLogoFill, path: "/dashboard/resumi" },
         { name: "Applied Jobs", icon: IoBagCheckOutline, path: "/dashboard/appliedJobs" },
         { name: "Shortlisted Jobs", icon: CiBookmark, path: "/dashboard/candidateBookmark" },
     ];
@@ -22,8 +22,9 @@ const Layout = () => {
     const employe = [
         { name: "Dashboard", icon: FaHome, path: "/dashboard" },
         { name: "Post A New Job", icon: MdOutlineKeyboardDoubleArrowRight, path: "/dashboard/postJob" },
+        { name: "Create Company", icon: MdCreateNewFolder, path: "/dashboard/createCompany" },
         { name: "Manage Jobs", icon: IoBagCheckOutline, path: "/dashboard/manageJob" },
-        { name: "All Applicants", icon: RiFileList2Fill, path: "" },
+        { name: "All Applicants", icon: RiFileList2Fill, path: "/dashboard/CandidateAppliedAllJobs" },
     ];
 
     const admin = [
@@ -35,8 +36,8 @@ const Layout = () => {
         { name: "Manage All Atricles", icon: FaArtstation, path: "/" },
     ];
 
-    const userRole = "candidate";
-    // const userRole = "employe";
+    // const userRole = "candidate";
+    const userRole = "employe";
     // const userRole = "admin";
 
     const isAdmin = userRole === "admin" ? [...admin] : userRole === "employe" ? [...employe] : [...candidate];

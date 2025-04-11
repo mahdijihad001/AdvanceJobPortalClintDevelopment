@@ -7,6 +7,7 @@ import { MdOutlineKeyboardDoubleArrowRight } from 'react-icons/md'
 import { IoBagCheckOutline } from 'react-icons/io5'
 import { RiFileList2Fill } from 'react-icons/ri'
 import { PiReadCvLogoFill } from 'react-icons/pi'
+import DashboardNav from './DashboardNav'
 
 const Layout = () => {
 
@@ -34,20 +35,18 @@ const Layout = () => {
         { name: "Manage All Atricles", icon: FaArtstation, path: "/" },
     ];
 
-    // const userRole = "candidate";
-    const userRole = "employe";
+    const userRole = "candidate";
+    // const userRole = "employe";
     // const userRole = "admin";
 
     const isAdmin = userRole === "admin" ? [...admin] : userRole === "employe" ? [...employe] : [...candidate];
 
     return (
         <div className='h-screen'>
-            <div className='grid grid-cols-15 gap-3 h-full'>
+            <DashboardNav/>
+            <div className='grid md:grid-cols-15 h-[90vh]'>
                 {/* Dashboard Menu */}
-                <div className='col-span-3 shadow p-6'>
-                    <div>
-                        <Link to={"/"}><img className='h-14' src={logo} alt="" /></Link>
-                    </div>
+                <div className='md:col-span-3 shadow p-6 hidden md:block'>
                     <div className='pt-7'>
                         {/* Menu */}
                         <div>
@@ -62,7 +61,7 @@ const Layout = () => {
                         </div>
                     </div>
                 </div>
-                <div className='overflow-y-auto col-span-12 p-6 shadow'>
+                <div className='overflow-y-auto md:col-span-12 p-6 shadow'>
                     <Outlet />
                 </div>
             </div>

@@ -18,15 +18,19 @@ const CandidateProfile = () => {
         <h1 className='text-3xl font-medium leading-5 text-gray-500'>My Profile!</h1>
         <h2 className='text-[20px] font-medium mt-[25px] text-gray-600'>Ready to jump back in?</h2>
       </div>
-
+      {/* ------------------------------------- */}
+      {/* Candidate Profile */}
       {/* My Profile */}
-      <form className='px-2.5 py-10'>
+      <form className='px-5 py-10 shadow bg-white rounded-[10px] mt-[40px] mb-[70px]'>
+        <div className=''>
+          <h1 className='text-2xl font-medium text-gray-500'>My Profile</h1>
+        </div>
         <div className='flex flex-col gap-5 md:flex-row py-10 items-center'>
           <img className='h-[100px] w-[100px] rounded-full' src={image ? image : demoProfile} alt="" />
           <input className='border p-10 rounded-md border-gray-300' onChange={HandleImageShow} name='file' type="file" />
         </div>
         {/* Form Input */}
-        <div className='space-y-7'>
+        <div className='space-y-5'>
           {/* Name & Job Title */}
           <div className='flex flex-col gap-4 md:flex-row items-center'>
             <div className='flex flex-col gap-1.5 w-full'>
@@ -82,7 +86,26 @@ const CandidateProfile = () => {
               <input className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" placeholder='Languages' />
             </div>
           </div>
-          {/* facebook link & twiter */}
+          {/* Description*/}
+          <div className='flex flex-col gap-4 md:flex-row items-center'>
+            <div className='flex flex-col gap-1.5 w-full'>
+              <label className='font-medium text-gray-500 text-[18px]' htmlFor="">Description</label>
+              {/* <input className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" placeholder='Complete Address' /> */}
+              <textarea className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' placeholder='Lorem ipsum dolor sit amet consectetur adipisicing elit. A totam corporis expedita earum maiores nobis sed necessitatibus labore minima ex aliquam ipsam dolorum rerum veniam, ad asperiores amet excepturi dignissimos!' name="" id=""></textarea>
+            </div>
+          </div>
+        </div>
+        <button className='bg-blue-600 font-bold text-white text-xl px-10 mt-10 py-4 rounded-md hover:bg-blue-400 duration-500'>Save</button>
+      </form>
+
+      {/* -------------------------------------------------------- */}
+      {/* Social Media */}
+      <form action="" className='px-5 py-10 shadow bg-white rounded-[10px] mb-[50px]'>
+        <div className='pb-[40px]'>
+          <h1 className='text-2xl font-medium text-gray-500'>Social Network</h1>
+        </div>
+        {/* facebook link & twiter */}
+        <div className='space-y-5'>
           <div className='flex flex-col gap-4 md:flex-row items-center'>
             <div className='flex flex-col gap-1.5 w-full'>
               <label className='font-medium text-gray-500 text-[18px]' htmlFor="">Facebook Profile</label>
@@ -104,6 +127,16 @@ const CandidateProfile = () => {
               <input className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" placeholder='https://www.github.com/' />
             </div>
           </div>
+          <button className='bg-blue-600 font-bold text-white text-xl px-10 mt-10 py-4 rounded-md hover:bg-blue-400 duration-500'>Save</button>
+        </div>
+      </form>
+      {/* ------------------------ */}
+      {/* Contact Information */}
+      <form action="" className='px-5 py-10 shadow bg-white rounded-[10px] mb-[50px]'>
+        <div className='pb-[40px]'>
+          <h1 className='text-2xl font-medium text-gray-500'>Contact Information</h1>
+        </div>
+        <div className='space-y-5'>
           {/* Country & City */}
           <div className='flex flex-col gap-4 md:flex-row items-center'>
             <div className='flex flex-col gap-1.5 w-full'>
@@ -120,14 +153,6 @@ const CandidateProfile = () => {
             <div className='flex flex-col gap-1.5 w-full'>
               <label className='font-medium text-gray-500 text-[18px]' htmlFor="">Complete Address</label>
               <input className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" placeholder='Complete Address' />
-            </div>
-          </div>
-          {/* Description*/}
-          <div className='flex flex-col gap-4 md:flex-row items-center'>
-            <div className='flex flex-col gap-1.5 w-full'>
-              <label className='font-medium text-gray-500 text-[18px]' htmlFor="">Description</label>
-              {/* <input className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" placeholder='Complete Address' /> */}
-              <textarea className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' placeholder='Lorem ipsum dolor sit amet consectetur adipisicing elit. A totam corporis expedita earum maiores nobis sed necessitatibus labore minima ex aliquam ipsam dolorum rerum veniam, ad asperiores amet excepturi dignissimos!' name="" id=""></textarea>
             </div>
           </div>
         </div>

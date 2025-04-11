@@ -61,7 +61,7 @@ const Layout = () => {
                         </div>
                     </div>
                 </div>
-                <div className='overflow-y-auto md:col-span-12 p-6 shadow'>
+                <div className='overflow-y-auto md:col-span-12 p-6 shadow bg-slate-50'>
                     <Outlet />
                 </div>
             </div>

@@ -13,7 +13,7 @@ const Layout = () => {
 
     const candidate = [
         { name: "Dashboard", icon: FaHome, path: "/dashboard" },
-        { name: "My Profile", icon: FaUser, path: `/dashboard/candifateProfile/${10}` },
+        { name: "Update Profile", icon: FaUser, path: `/dashboard/candifateProfile/${10}` },
         { name: "My Resume", icon: PiReadCvLogoFill, path: "/dashboard/resumi" },
         { name: "Applied Jobs", icon: IoBagCheckOutline, path: "/dashboard/appliedJobs" },
         { name: "Shortlisted Jobs", icon: CiBookmark, path: "/dashboard/candidateBookmark" },
@@ -45,9 +45,9 @@ const Layout = () => {
     return (
         <div className='h-screen'>
             <DashboardNav/>
-            <div className='grid md:grid-cols-15 h-[90vh]'>
+            <div className='grid lg:grid-cols-15 h-[90vh]'>
                 {/* Dashboard Menu */}
-                <div className='md:col-span-3 shadow p-6 hidden md:block'>
+                <div className='lg:col-span-3 shadow p-6 hidden lg:block'>
                     <div className='pt-7'>
                         {/* Menu */}
                         <div>
@@ -62,7 +62,7 @@ const Layout = () => {
                         </div>
                     </div>
                 </div>
-                <div className='overflow-y-auto md:col-span-12 p-6 shadow bg-slate-50'>
+                <div className='overflow-y-auto lg:col-span-12 p-6 shadow bg-slate-50'>
                     <Outlet />
                 </div>
             </div>

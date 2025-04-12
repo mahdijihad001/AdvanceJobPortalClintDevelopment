@@ -1,6 +1,4 @@
 import React from 'react'
-import { FaRegBookmark } from 'react-icons/fa'
-import { IoBagCheckOutline, IoDocumentTextOutline } from 'react-icons/io5'
 import CandidateOverview from '../Candidate/CandidateOverview'
 import { useState } from 'react'
 import EmployeOverview from '../Employe/EmployeOverview'

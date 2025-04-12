@@ -19,6 +19,10 @@ import ManageJobs from './Page/Dashboard/Employe/ManageJobs.jsx'
 import CandidateResumi from './Page/Dashboard/Candidate/CandidateResumi.jsx'
 import CreateCompany from './Page/Dashboard/Employe/CreateCompany.jsx'
 import AllAppliedJobs from './Page/Dashboard/Employe/AllAppliedJobs.jsx'
+import ManageAllJobs from './Page/Dashboard/Admin/ManageAllJobs.jsx'
+import ManageAllUsers from './Page/Dashboard/Admin/ManageAllUsers.jsx'
+import PostNewArtical from './Page/Dashboard/Admin/PostNewArtical.jsx'
+import ManageAllArticals from './Page/Dashboard/Admin/ManageAllArticals.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -44,6 +48,10 @@ createRoot(document.getElementById('root')).render(
           <Route path='postJob' element={<PostNewJob/>} />
           <Route path='manageJob' element={<ManageJobs/>} />
           <Route path='resumi' element={<CandidateResumi/>} />
+          <Route path='manageAllJobs' element={<ManageAllJobs/>} />
+          <Route path='manageAllUsers' element={<ManageAllUsers/>} />
+          <Route path='postArticals' element={<PostNewArtical/>} />
+          <Route path='manageArticals' element={<ManageAllArticals/>} />
         </Route>
       </Routes>
     </BrowserRouter>

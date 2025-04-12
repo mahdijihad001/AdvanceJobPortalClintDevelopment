@@ -28,16 +28,16 @@ const Layout = () => {
     ];
 
     const admin = [
-        { name: "Dashboard", icon: FaHome, path: "/" },
-        { name: "Manage All User", icon: FaUser, path: "/" },
-        { name: "Post A New Job", icon: MdOutlineKeyboardDoubleArrowRight, path: "/" },
-        { name: "Manage All Jobs", icon: IoBagCheckOutline, path: "/" },
-        { name: "Post New Atricles", icon: MdOutlineKeyboardDoubleArrowRight, path: "/" },
-        { name: "Manage All Atricles", icon: FaArtstation, path: "/" },
+        { name: "Dashboard", icon: FaHome, path: "/dashboard" },
+        { name: "Manage All User", icon: FaUser, path: "/dashboard/manageAllUsers" },
+        { name: "Post A New Job", icon: MdOutlineKeyboardDoubleArrowRight, path: "/dashboard/postJob" },
+        { name: "Manage All Jobs", icon: IoBagCheckOutline, path: "/dashboard/manageAllJobs" },
+        { name: "Post New Atricles", icon: MdOutlineKeyboardDoubleArrowRight, path: "/dashboard/postArticals" },
+        { name: "Manage All Atricles", icon: FaArtstation, path: "/dashboard/manageArticals" },
     ];
 
-    // const userRole = "candidate";
-    const userRole = "employe";
+    const userRole = "candidate";
+    // const userRole = "employe";
     // const userRole = "admin";
 
     const isAdmin = userRole === "admin" ? [...admin] : userRole === "employe" ? [...employe] : [...candidate];

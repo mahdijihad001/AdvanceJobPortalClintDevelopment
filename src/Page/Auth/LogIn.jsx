@@ -1,33 +1,48 @@
 import React from 'react'
 import LogInImage from "../../assets/banner-img-1.png"
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import BaseUrl from './../../Utils/BaseUrl/BaseUrl';
+import Swal from 'sweetalert2';
 
 const LogIn = () => {
 
-    const HandleLogIn = async(e) =>{
-        e.preventDefault();
+    const navigate = useNavigate();
 
+    const HandleLogIn = async (e) => {
+        e.preventDefault();
         const form = e.target;
 
         const username = form.username.value;
         const password = form.password.value;
 
-        const user = {username , password};
-        console.log(user);
+        const user = { username, password };
 
-        const result = await fetch(`${BaseUrl()}/user/login` , {
-            method : "POST",
-            credentials : "include",
-            headers : {
-                "Content-Type" : "application/json"
+        const result = await fetch(`${BaseUrl()}/user/login`, {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json"
             },
-            body : JSON.stringify(user)
+            body: JSON.stringify(user)
         });
 
         const finalResult = await result.json();
 
-        console.log(finalResult)
+        if (finalResult?.status) {
+            Swal.fire({
+                title: "Success",
+                text: finalResult?.message,
+                icon: "success"
+            });
+            localStorage.setItem("user", JSON.stringify(finalResult.data?.user));
+            navigate("/")
+        } else {
+            Swal.fire({
+                title: "Faild",
+                text: finalResult?.message,
+                icon: "error"
+            });
+        }
 
     }
 

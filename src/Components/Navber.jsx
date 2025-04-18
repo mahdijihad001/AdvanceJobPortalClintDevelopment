@@ -1,27 +1,60 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import navLogo from "../assets/logo.svg"
 import { Link, NavLink, useNavigate } from 'react-router'
 import { RxCross1 } from 'react-icons/rx';
 import { FaAngleRight, FaUser } from 'react-icons/fa';
 import { HiOutlineBars3BottomRight } from 'react-icons/hi2';
+import BaseUrl from '../Utils/BaseUrl/BaseUrl';
+import Swal from 'sweetalert2';
+import { CreateAuthContext } from '../Context/Auth/CreateAuthContext';
 
 const Navber = () => {
 
+  const {logOut} = useContext(CreateAuthContext)
 
   const navigate = useNavigate();
   const [user] = useState(true);
   const [scrolling, setScrolling] = useState(false);
-  const [menuOpen , setMenuOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  const HandleMobileMenu = () =>{
+  const HandleMobileMenu = () => {
     setMenuOpen(!menuOpen);
-  }
+  };
+
 
   const navItem = [
     { name: "Home", path: "/" },
     { name: "All Jobs", path: "/alljobs" },
     { name: "Dashboard", path: "/dashboard" },
   ];
+
+  const HandleLogOut = async () => {
+    const result = await fetch(`${BaseUrl()}/user/logout`, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json"
+      },
+      credentials: "include"
+    });
+
+    const filanResult = await result.json();
+
+    if (filanResult.status) {
+      Swal.fire({
+        title: "Success!",
+        text: filanResult.message,
+        icon: "success"
+      });
+      logOut();
+    } else {
+      Swal.fire({
+        title: "Faild!",
+        text: filanResult.message,
+        icon: "error"
+      });
+    }
+
+  }
 
   useEffect(() => {
 
@@ -62,17 +95,20 @@ const Navber = () => {
       </div>
       {/* Mobile Menu */}
       <div className={`min-w-[300px] bg-white h-screen absolute top-0 p-4 shadow z-50 ${menuOpen ? "translate-x-[0px]" : "translate-x-[-400px]"} duration-700`}>
-         <div className='flex items-center justify-between'>
+        <div className='flex items-center justify-between'>
           <img className='h-10 w-[120px]' src={navLogo} alt="" />
           <RxCross1 onClick={() => HandleMobileMenu()} className='text-3xl font-bold' />
-         </div>
-         <div className='flex flex-col gap-7 pt-10'>
-            {
-              navItem.map((item , idx) =>(
-                <NavLink onClick={() => HandleMobileMenu()} to={item.path} key={idx} className={"text-xl text-gray-500 font-medium active:text-blue-700/45"}><span>{item.name}</span></NavLink>
-              ))
-            }
-         </div>
+        </div>
+        <div className='flex flex-col gap-7 pt-10'>
+          {
+            navItem.map((item, idx) => (
+              <NavLink onClick={() => HandleMobileMenu()} to={item.path} key={idx} className={"text-xl text-gray-500 font-medium active:text-blue-700/45"}><span>{item.name}</span></NavLink>
+            ))
+          }
+
+          <NavLink onClick={() => {HandleMobileMenu() , HandleLogOut()}} className={"text-xl text-gray-500 font-medium active:text-blue-700/45"}><span>LogOut</span></NavLink>
+
+        </div>
       </div>
     </div>
   )

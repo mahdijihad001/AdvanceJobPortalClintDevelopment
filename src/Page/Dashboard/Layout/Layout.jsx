@@ -44,7 +44,7 @@ const Layout = () => {
 
     return (
         <div className='h-screen'>
-            <DashboardNav/>
+            <DashboardNav />
             <div className='grid lg:grid-cols-15 h-[90vh]'>
                 {/* Dashboard Menu */}
                 <div className='lg:col-span-3 shadow p-6 hidden lg:block'>
@@ -57,7 +57,6 @@ const Layout = () => {
                                         <Link key={idx} to={item.path} className='flex items-center gap-2.5 text-[22px] font-medium text-slate-600 leading-8 outfit'><item.icon /><span>{item.name}</span></Link>
                                     ))
                                 }
-
                             </ul>
                         </div>
                     </div>

@@ -1,6 +1,5 @@
 import React from 'react'
 import { Link, Outlet } from 'react-router'
-import logo from "../../../assets/logo.svg"
 import { CiBookmark, CiLogin } from 'react-icons/ci'
 import { FaArtstation, FaHome, FaUser } from 'react-icons/fa'
 import { MdCreateNewFolder, MdOutlineKeyboardDoubleArrowRight } from 'react-icons/md'
@@ -31,14 +30,15 @@ const Layout = () => {
         { name: "Dashboard", icon: FaHome, path: "/dashboard" },
         { name: "Manage All User", icon: FaUser, path: "/dashboard/manageAllUsers" },
         { name: "Post A New Job", icon: MdOutlineKeyboardDoubleArrowRight, path: "/dashboard/postJob" },
+        { name: "Create Company", icon: MdCreateNewFolder, path: "/dashboard/createCompany" },
         { name: "Manage All Jobs", icon: IoBagCheckOutline, path: "/dashboard/manageAllJobs" },
         { name: "Post New Atricles", icon: MdOutlineKeyboardDoubleArrowRight, path: "/dashboard/postArticals" },
         { name: "Manage All Atricles", icon: FaArtstation, path: "/dashboard/manageArticals" },
     ];
 
-    const userRole = "candidate";
+    // const userRole = "candidate";
     // const userRole = "employe";
-    // const userRole = "admin";
+    const userRole = "admin";
 
     const isAdmin = userRole === "admin" ? [...admin] : userRole === "employe" ? [...employe] : [...candidate];
 

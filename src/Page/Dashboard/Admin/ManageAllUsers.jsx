@@ -1,13 +1,68 @@
-import React from 'react'
-import figma from "../../../assets/figma.png";
+import React, { useEffect, useState } from 'react'
 import { CiEdit } from 'react-icons/ci'
 import { FaEye } from 'react-icons/fa'
-import { FaLocationDot } from 'react-icons/fa6'
-import { GrDocumentStore } from 'react-icons/gr'
 import { RiDeleteBinLine } from 'react-icons/ri'
-import { Link } from 'react-router'
+import BaseUrl from './../../../Utils/BaseUrl/BaseUrl';
+import Swal from 'sweetalert2';
 
 const ManageAllUsers = () => {
+
+  const [allUser, setAllUser] = useState([]);
+
+  useEffect(() => {
+    const featchData = async () => {
+      try {
+        const result = await fetch(`${BaseUrl()}/user/find`);
+        const finalResult = await result.json();
+        setAllUser(finalResult?.allUser)
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    featchData();
+  }, []);
+
+
+
+  const HandleDeleteuser = async (id) => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    });
+
+    if (result.isConfirmed) {
+      try {
+        const result = await fetch(`${BaseUrl()}/user/delete/${id}`, {
+          method: "DELETE"
+        });
+        const finalResult = await result.json();
+        if (finalResult?.status) {
+          Swal.fire({
+            title: "Good job!",
+            text: "User Deleted Success!",
+            icon: "success"
+          });
+          // Remove user is display
+          setAllUser((allUser) => allUser.filter((item) => item._id !== id));
+
+        }
+      } catch (error) {
+        Swal.fire({
+          title: "Faild!",
+          text: "User Deleted Faild!",
+          icon: "error"
+        });
+      }
+    }
+  }
+
+
+
   return (
     <div>
       <div>
@@ -27,26 +82,28 @@ const ManageAllUsers = () => {
           <tbody>
             {/* Gap Between Rows */}
             <tr className="h-4"></tr>
-            {/* First Row */}
-            <tr className="border border-gray-300 rounded-md">
-              <td className="py-4 px-5">UserName</td>
-              <td className="py-4 px-5 text-gray-700 ">MohammadJihad4040@gmail.com</td>
-              <td className="py-4 px-5 text-gray-700 flex flex-col gap-1">Candidate</td>
-              <td className="py-4 px-5">
-                <div className='flex gap-4 items-center text-gray-600 text-xl cursor-pointer'>
-                  <FaEye className='hover:text-blue-500' />
-                  <CiEdit className='hover:text-blue-500' />
-                  <RiDeleteBinLine className='hover:text-red-500' />
-                </div>
-              </td>
-            </tr>
+            {
+              allUser.map((item) =>
+                <tr key={item._id} className="border border-gray-300 rounded-md" >
+                  <td className="py-4 px-5">{item?.username}</td>
+                  <td className="py-4 px-5 text-gray-700 ">{item?.email}</td>
+                  <td className="py-4 px-5 text-gray-700 flex flex-col gap-1">{item?.role}</td>
+                  <td className="py-4 px-5">
+                    <div className='flex gap-4 items-center text-gray-600 text-xl cursor-pointer'>
+                      <FaEye className='hover:text-blue-500' />
+                      <CiEdit className='hover:text-blue-500' />
+                      <RiDeleteBinLine onClick={() => HandleDeleteuser(item?._id)} className='hover:text-red-500' />
+                    </div>
+                  </td>
+                </tr>
+              )
+            }
             {/* Gap Between Rows */}
             <tr className="h-4"></tr>
-
           </tbody>
         </table>
       </div>
-    </div>
+    </div >
   )
 }
 

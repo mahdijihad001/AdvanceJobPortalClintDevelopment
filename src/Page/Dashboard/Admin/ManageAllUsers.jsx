@@ -4,6 +4,7 @@ import { FaEye } from 'react-icons/fa'
 import { RiDeleteBinLine } from 'react-icons/ri'
 import BaseUrl from './../../../Utils/BaseUrl/BaseUrl';
 import Swal from 'sweetalert2';
+import { Link } from 'react-router';
 
 const ManageAllUsers = () => {
 
@@ -91,7 +92,7 @@ const ManageAllUsers = () => {
                   <td className="py-4 px-5">
                     <div className='flex gap-4 items-center text-gray-600 text-xl cursor-pointer'>
                       <FaEye className='hover:text-blue-500' />
-                      <CiEdit className='hover:text-blue-500' />
+                      <Link to={`/dashboard/updateUser/${item._id}`}><CiEdit className='hover:text-blue-500' /></Link>
                       <RiDeleteBinLine onClick={() => HandleDeleteuser(item?._id)} className='hover:text-red-500' />
                     </div>
                   </td>

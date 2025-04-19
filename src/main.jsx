@@ -24,6 +24,7 @@ import ManageAllUsers from './Page/Dashboard/Admin/ManageAllUsers.jsx'
 import PostNewArtical from './Page/Dashboard/Admin/PostNewArtical.jsx'
 import ManageAllArticals from './Page/Dashboard/Admin/ManageAllArticals.jsx'
 import AuthContextProvider from './Context/Auth/AuthContextProvider.jsx'
+import UpdateUser from './Page/Dashboard/Admin/UpdateUser.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -54,6 +55,7 @@ createRoot(document.getElementById('root')).render(
             <Route path='manageAllUsers' element={<ManageAllUsers />} />
             <Route path='postArticals' element={<PostNewArtical />} />
             <Route path='manageArticals' element={<ManageAllArticals />} />
+            <Route path='updateUser/:id' element={<UpdateUser/>}/>
           </Route>
         </Routes>
       </BrowserRouter>

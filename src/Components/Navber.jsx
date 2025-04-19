@@ -46,7 +46,7 @@ const Navber = () => {
         icon: "success"
       });
       logOut();
-    } else {
+    } else{
       Swal.fire({
         title: "Faild!",
         text: filanResult.message,

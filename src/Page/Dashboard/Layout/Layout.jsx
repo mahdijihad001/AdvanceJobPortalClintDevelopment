@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link, Outlet } from 'react-router'
 import { CiBookmark } from 'react-icons/ci'
 import { FaArtstation, FaHome, FaUser } from 'react-icons/fa'
@@ -7,12 +7,16 @@ import { IoBagCheckOutline } from 'react-icons/io5'
 import { RiFileList2Fill } from 'react-icons/ri'
 import { PiReadCvLogoFill } from 'react-icons/pi'
 import DashboardNav from './DashboardNav'
+import { CreateAuthContext } from '../../../Context/Auth/CreateAuthContext'
 
 const Layout = () => {
 
+    const {user} = useContext(CreateAuthContext);
+
+    
     const candidate = [
         { name: "Dashboard", icon: FaHome, path: "/dashboard" },
-        { name: "Update Profile", icon: FaUser, path: `/dashboard/candifateProfile/${10}` },
+        { name: "Update Profile", icon: FaUser, path: user?._id ?  `/dashboard/candifateProfile/${user?._id}` : "#" },
         { name: "My Resume", icon: PiReadCvLogoFill, path: "/dashboard/resumi" },
         { name: "Applied Jobs", icon: IoBagCheckOutline, path: "/dashboard/appliedJobs" },
         { name: "Shortlisted Jobs", icon: CiBookmark, path: "/dashboard/candidateBookmark" },

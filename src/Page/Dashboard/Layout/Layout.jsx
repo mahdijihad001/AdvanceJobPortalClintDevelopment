@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link, Outlet } from 'react-router'
-import { CiBookmark, CiLogin } from 'react-icons/ci'
+import { CiBookmark } from 'react-icons/ci'
 import { FaArtstation, FaHome, FaUser } from 'react-icons/fa'
 import { MdCreateNewFolder, MdOutlineKeyboardDoubleArrowRight } from 'react-icons/md'
 import { IoBagCheckOutline } from 'react-icons/io5'
@@ -36,9 +36,9 @@ const Layout = () => {
         { name: "Manage All Atricles", icon: FaArtstation, path: "/dashboard/manageArticals" },
     ];
 
-    // const userRole = "candidate";
+    const userRole = "candidate";
     // const userRole = "employe";
-    const userRole = "admin";
+    // const userRole = "admin";
 
     const isAdmin = userRole === "admin" ? [...admin] : userRole === "employe" ? [...employe] : [...candidate];
 

@@ -17,7 +17,7 @@ const Layout = () => {
     const candidate = [
         { name: "Dashboard", icon: FaHome, path: "/dashboard" },
         { name: "Update Profile", icon: FaUser, path: user?._id ?  `/dashboard/candifateProfile/${user?._id}` : "#" },
-        { name: "My Resume", icon: PiReadCvLogoFill, path: "/dashboard/resumi" },
+        { name: "My Resume", icon: PiReadCvLogoFill, path: user?._id ? `/dashboard/resumi/${user?._id}` : "#" },
         { name: "Applied Jobs", icon: IoBagCheckOutline, path: "/dashboard/appliedJobs" },
         { name: "Shortlisted Jobs", icon: CiBookmark, path: "/dashboard/candidateBookmark" },
     ];

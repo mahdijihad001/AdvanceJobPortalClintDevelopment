@@ -1,8 +1,24 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { CiEdit } from 'react-icons/ci'
-import { Link } from 'react-router'
+import { Link, useParams } from 'react-router'
+import BaseUrl from '../../../Utils/BaseUrl/BaseUrl';
 
 const CandidateResumi = () => {
+
+    const {id} = useParams();
+    const [resumi , setResumi] = useState([]);
+    console.log(resumi);
+    useEffect( () =>{
+        const getResumi = async() =>{
+            const result = await fetch(`${BaseUrl()}/resumi/find/${id}`);
+            const finalResult = await result.json();
+            if(finalResult.status){
+                setResumi(finalResult.data)
+            }
+        };
+        getResumi();
+    } ,[id])
+
     return (
         <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-6">
             {/* Header Section */}

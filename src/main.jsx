@@ -50,7 +50,7 @@ createRoot(document.getElementById('root')).render(
             <Route path='candidateBookmark' element={<CandidateBookmark />} />
             <Route path='postJob' element={<PostNewJob />} />
             <Route path='manageJob' element={<ManageJobs />} />
-            <Route path='resumi' element={<CandidateResumi />} />
+            <Route path='resumi/:id' element={<CandidateResumi />} />
             <Route path='manageAllJobs' element={<ManageAllJobs />} />
             <Route path='manageAllUsers' element={<ManageAllUsers />} />
             <Route path='postArticals' element={<PostNewArtical />} />

@@ -1,25 +1,62 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import demoProfile from "../../../assets/demoProfile.png"
 import { CreateAuthContext } from '../../../Context/Auth/CreateAuthContext';
 import { useParams } from 'react-router';
 import BaseUrl from './../../../Utils/BaseUrl/BaseUrl';
 import Swal from 'sweetalert2';
+import SocialNetwork from './SocialMediaForm/SocialNetwork';
+import ContactAddress from './ContactForm/ContactAddress';
 
 const CandidateProfile = () => {
 
   const { id } = useParams();
 
+  const [user, setUser] = useState([]);
+  const [profile , setProfile] = useState([])
+
   const [authoreImg, setAuthoreImg] = useState("");
 
   const [img, setimg] = useState("");
 
-  const HandleImageShow = (e) => {
+  const HandleImageShow = async(e) => {
     const file = e.target.files[0];
     if (file) {
       setimg(URL.createObjectURL(file));
     };
 
+    if(!file) return
+
+    const data = new FormData();
+    data.append("file" , file);
+    data.append("upload_preset" , "jobportal_cloud_image_host");
+    data.append("cloud_name" , "de8jq6747");
+
+    const getImageUrl = await fetch(`https://api.cloudinary.com/v1_1/de8jq6747/image/upload` , {method : "POST" , body : data})
+    const result = await getImageUrl.json();
+    setAuthoreImg(result?.url);
   };
+
+
+  useEffect(() => {
+    const getUser = async () => {
+      const result = await fetch(`${BaseUrl()}/user/${id}`);
+      const finalResult = await result.json();
+      if (finalResult.status) {
+        setUser(finalResult?.user);
+      }
+    };
+
+    const getuserProfileData = async() =>{
+      const result = await fetch(`${BaseUrl()}/profile/single/${id}`);
+      const finalResult = await result.json();
+      if(finalResult.status){
+        setProfile(finalResult?.profile)
+      }
+
+    }
+    getUser();
+    getuserProfileData();
+  }, [id])
 
   const HandleUpdateProfile = async (e) => {
     e.preventDefault();
@@ -41,11 +78,11 @@ const CandidateProfile = () => {
 
     const updateProfile = { authore, image, fullname, jobTitle, phoneNumber, website, expectedSalary, exprience, age, educationLable, language, description };
 
-    const emailUpdate = await fetch(`${BaseUrl()}/user/update/${id}`, { method: "PATCH", headers: { "Content-type": "application/json", body: JSON.stringify({ email })}});
+    const emailUpdate = await fetch(`${BaseUrl()}/user/update/${id}`, { method: "PATCH", headers: { "Content-type": "application/json", body: JSON.stringify({ email }) } });
 
     const finalUpdateEmail = await emailUpdate.json();
 
-    if(!finalUpdateEmail.status){
+    if (!finalUpdateEmail.status) {
       return Swal.fire({
         title: "Faild!",
         text: finalUpdateEmail.message,
@@ -71,7 +108,7 @@ const CandidateProfile = () => {
       });
     }
 
-  }
+  };  
 
   return (
     <div className='p-2 md:p-5'>
@@ -95,62 +132,62 @@ const CandidateProfile = () => {
           <div className='flex flex-col gap-4 md:flex-row items-center'>
             <div className='flex flex-col gap-1.5 w-full'>
               <label className='font-medium text-gray-500 text-[18px]' htmlFor="">Full Name</label>
-              <input name='fullName' className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" placeholder='Full Name' />
+              <input defaultValue={profile ? profile?.fullname : ""} name='fullName' className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" placeholder='Full Name' />
             </div>
             <div className='flex flex-col gap-1.5 w-full'>
               <label className='font-medium text-gray-500 text-[18px]' htmlFor="">Job Title</label>
-              <input name='jobTitle' className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" placeholder='Job Title' />
+              <input defaultValue={profile ? profile?.jobTitle : ""} name='jobTitle' className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" placeholder='Job Title' />
             </div>
           </div>
           {/* Phone & Email*/}
           <div className='flex flex-col gap-4 md:flex-row items-center'>
             <div className='flex flex-col gap-1.5 w-full'>
               <label className='font-medium text-gray-500 text-[18px]' htmlFor="">Phone</label>
-              <input name='phone' className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="number" placeholder='Phone Number' />
+              <input defaultValue={profile ? profile?.phoneNumber : ""} name='phone' className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="number" placeholder='Phone Number' />
             </div>
             <div className='flex flex-col gap-1.5 w-full'>
               <label className='font-medium text-gray-500 text-[18px]' htmlFor="">Email</label>
-              <input name='email' className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="email" placeholder='Email' />
+              <input defaultValue={user ? user?.email : ""} name='email' className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="email" placeholder='Email' />
             </div>
           </div>
           {/* Website & sallary*/}
           <div className='flex flex-col gap-4 md:flex-row items-center'>
             <div className='flex flex-col gap-1.5 w-full'>
               <label className='font-medium text-gray-500 text-[18px]' htmlFor="">Website</label>
-              <input name='website' className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" placeholder='www.profile.com' />
+              <input defaultValue={profile ? profile?.website : ""} name='website' className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" placeholder='www.profile.com' />
             </div>
             <div className='flex flex-col gap-1.5 w-full'>
               <label className='font-medium text-gray-500 text-[18px]' htmlFor="">Expected Salary</label>
-              <input name='expectedSalary' className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" placeholder='Expected Salary' />
+              <input defaultValue={profile ? profile?.expectedSalary : ""}  name='expectedSalary' className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" placeholder='Expected Salary' />
             </div>
           </div>
           {/* Exprience & age*/}
           <div className='flex flex-col gap-4 md:flex-row items-center'>
             <div className='flex flex-col gap-1.5 w-full'>
               <label className='font-medium text-gray-500 text-[18px]' htmlFor="">Exprience</label>
-              <input name='exprience' className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" placeholder='Exprience' />
+              <input defaultValue={profile ? profile?.exprience : ""} name='exprience' className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" placeholder='Exprience' />
             </div>
             <div className='flex flex-col gap-1.5 w-full'>
               <label className='font-medium text-gray-500 text-[18px]' htmlFor="">Age</label>
-              <input name='age' className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" placeholder='Age' />
+              <input defaultValue={profile ? profile?.age : ""} name='age' className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" placeholder='Age' />
             </div>
           </div>
           {/* Education Level & Languages */}
           <div className='flex flex-col gap-4 md:flex-row items-center'>
             <div className='flex flex-col gap-1.5 w-full'>
               <label className='font-medium text-gray-500 text-[18px]' htmlFor="">Education Level</label>
-              <input name='educationLable' className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" placeholder='Education Level' />
+              <input defaultValue={profile ? profile?.educationLable : ""} name='educationLable' className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" placeholder='Education Level' />
             </div>
             <div className='flex flex-col gap-1.5 w-full'>
               <label className='font-medium text-gray-500 text-[18px]' htmlFor="">Language</label>
-              <input name='language' className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" placeholder='Languages' />
+              <input defaultValue={profile ? profile?.language : ""} name='language' className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" placeholder='Languages' />
             </div>
           </div>
           {/* Description*/}
           <div className='flex flex-col gap-4 md:flex-row items-center'>
             <div className='flex flex-col gap-1.5 w-full'>
               <label className='font-medium text-gray-500 text-[18px]' htmlFor="">Description</label>
-              <textarea className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200 min-h-[200px]' placeholder='Lorem ipsum dolor sit amet consectetur adipisicing elit. A totam corporis expedita earum maiores nobis sed necessitatibus labore minima ex aliquam ipsam dolorum rerum veniam, ad asperiores amet excepturi dignissimos!' name="description" id=""></textarea>
+              <textarea defaultValue={profile ? profile?.description : ""} className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200 min-h-[200px]' placeholder='Lorem ipsum dolor sit amet consectetur adipisicing elit. A totam corporis expedita earum maiores nobis sed necessitatibus labore minima ex aliquam ipsam dolorum rerum veniam, ad asperiores amet excepturi dignissimos!' name="description" id=""></textarea>
             </div>
           </div>
         </div>
@@ -159,66 +196,12 @@ const CandidateProfile = () => {
 
       {/* -------------------------------------------------------- */}
       {/* Social Media */}
-      <form action="" className='px-5 py-10 shadow bg-white rounded-[10px] mb-[50px]'>
-        <div className='pb-[40px]'>
-          <h1 className='text-2xl font-medium text-gray-500'>Social Network</h1>
-        </div>
-        {/* facebook link & twiter */}
-        <div className='space-y-5'>
-          <div className='flex flex-col gap-4 md:flex-row items-center'>
-            <div className='flex flex-col gap-1.5 w-full'>
-              <label className='font-medium text-gray-500 text-[18px]' htmlFor="">Facebook Profile</label>
-              <input className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" placeholder='https://www.facebook.com' />
-            </div>
-            <div className='flex flex-col gap-1.5 w-full'>
-              <label className='font-medium text-gray-500 text-[18px]' htmlFor="">Twiter Profile</label>
-              <input className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" placeholder='https://www.twiter.com/' />
-            </div>
-          </div>
-          {/* Linkedin & github */}
-          <div className='flex flex-col gap-4 md:flex-row items-center'>
-            <div className='flex flex-col gap-1.5 w-full'>
-              <label className='font-medium text-gray-500 text-[18px]' htmlFor="">Linkedin Profile</label>
-              <input className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" placeholder='https://www.Linkedin.com' />
-            </div>
-            <div className='flex flex-col gap-1.5 w-full'>
-              <label className='font-medium text-gray-500 text-[18px]' htmlFor="">Github Profile</label>
-              <input className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" placeholder='https://www.github.com/' />
-            </div>
-          </div>
-          <button className='bg-blue-600 font-bold text-white text-xl px-10 mt-10 py-4 rounded-md hover:bg-blue-400 duration-500'>Save</button>
-        </div>
-      </form>
+      <SocialNetwork id={id} />
 
 
       {/* ------------------------ */}
       {/* Contact Information */}
-      <form action="" className='px-5 py-10 shadow bg-white rounded-[10px] mb-[50px]'>
-        <div className='pb-[40px]'>
-          <h1 className='text-2xl font-medium text-gray-500'>Contact Information</h1>
-        </div>
-        <div className='space-y-5'>
-          {/* Country & City */}
-          <div className='flex flex-col gap-4 md:flex-row items-center'>
-            <div className='flex flex-col gap-1.5 w-full'>
-              <label className='font-medium text-gray-500 text-[18px]' htmlFor="">Country</label>
-              <input className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" placeholder='Country' />
-            </div>
-            <div className='flex flex-col gap-1.5 w-full'>
-              <label className='font-medium text-gray-500 text-[18px]' htmlFor="">City</label>
-              <input className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" placeholder='City' />
-            </div>
-          </div>
-          {/* Complete Address */}
-          <div className='flex flex-col gap-4 md:flex-row items-center'>
-            <div className='flex flex-col gap-1.5 w-full'>
-              <label className='font-medium text-gray-500 text-[18px]' htmlFor="">Complete Address</label>
-              <input className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" placeholder='Complete Address' />
-            </div>
-          </div>
-        </div>
-        <button className='bg-blue-600 font-bold text-white text-xl px-10 mt-10 py-4 rounded-md hover:bg-blue-400 duration-500'>Save</button>
-      </form>
+      <ContactAddress id={id} />
 
     </div>
   )

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Link, Outlet } from 'react-router'
 import { CiBookmark } from 'react-icons/ci'
 import { FaArtstation, FaHome, FaUser } from 'react-icons/fa'
@@ -12,7 +12,6 @@ import { CreateAuthContext } from '../../../Context/Auth/CreateAuthContext'
 const Layout = () => {
 
     const {user} = useContext(CreateAuthContext);
-
     
     const candidate = [
         { name: "Dashboard", icon: FaHome, path: "/dashboard" },
@@ -40,9 +39,14 @@ const Layout = () => {
         { name: "Manage All Atricles", icon: FaArtstation, path: "/dashboard/manageArticals" },
     ];
 
-    const userRole = "candidate";
-    // const userRole = "employe";
+    // const userRole = user?.role;
+    // const [userRole , setUserRole] = useState(user?.role);
+    const userRole = "employe";
     // const userRole = "admin";
+
+    // useEffect( () =>{
+    //     setUserRole(user?.role)
+    // } ,[user])
 
     const isAdmin = userRole === "admin" ? [...admin] : userRole === "employe" ? [...employe] : [...candidate];
 

@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form';
 
 
 const PostNewJob = () => {
@@ -29,6 +30,24 @@ const PostNewJob = () => {
         { id: 10, name: "Customer Service" }
     ];
 
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        setValue,
+        watch
+    } = useForm();
+
+
+    const HandleCreateJob = (data) => {
+        console.log(data);
+    }
+
+
+    // useEffect( () =>{
+
+    // } ,[]);
+
     return (
         <div className='p-2 md:p-5'>
             <div>
@@ -36,7 +55,7 @@ const PostNewJob = () => {
             </div>
             {/* ---------------------------------- */}
             {/* Post Job */}
-            <form className='px-5 py-10 shadow bg-white rounded-[10px] mt-[40px] mb-[70px] space-y-4'>
+            <form onSubmit={handleSubmit(HandleCreateJob)} className='px-5 py-10 shadow bg-white rounded-[10px] mt-[40px] mb-[70px] space-y-4'>
                 <div className='pb-8'>
                     <h1 className='text-2xl font-medium text-gray-500'>Create New Job</h1>
                 </div>
@@ -44,13 +63,18 @@ const PostNewJob = () => {
                 <div className='flex flex-col gap-4 md:flex-row items-center'>
                     <div className='flex flex-col gap-1.5 w-full'>
                         <label className='font-medium text-gray-500 text-[18px]' htmlFor="">Job Title</label>
-                        <input className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" placeholder='Job Title' />
+                        <input {...register("jobTitle")} className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" placeholder='' />
                     </div>
                     <div className='flex flex-col gap-1.5 w-full'>
                         <label className='font-medium text-gray-500 text-[18px]' htmlFor="">Job Type</label>
-                        <select className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' value="">
+                        <select
+                            onChange={(e) => setValue("jobType" , e.target.value)}
+                            className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200'
+                        >
                             {
-                                positions.map((item, idx) => <option key={idx}>{item.department}</option>)
+                                positions.map((item, idx) => (
+                                    <option key={idx} value={item.department}>{item.department}</option>
+                                ))
                             }
                         </select>
                     </div>
@@ -59,11 +83,11 @@ const PostNewJob = () => {
                 <div className='flex flex-col gap-4 md:flex-row items-center'>
                     <div className='flex flex-col gap-1.5 w-full'>
                         <label className='font-medium text-gray-500 text-[18px]' htmlFor="">Offered Salary</label>
-                        <input className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" placeholder='Offered Salary' />
+                        <input {...register("offerdSalary")} className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" placeholder='' />
                     </div>
                     <div className='flex flex-col gap-1.5 w-full'>
                         <label className='font-medium text-gray-500 text-[18px]' htmlFor="">Experience</label>
-                        <input className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" placeholder='Experience' />
+                        <input {...register("exprience")} className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" placeholder='' />
                     </div>
                 </div>
 
@@ -71,15 +95,15 @@ const PostNewJob = () => {
                 <div className='flex flex-col gap-4 md:flex-row items-center'>
                     <div className='flex flex-col gap-1.5 w-full'>
                         <label className='font-medium text-gray-500 text-[18px]' htmlFor="">Gender</label>
-                        <select className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' value="">
-                            <option value="">Male</option>
-                            <option value="">Femail</option>
-                            <option value="">Both</option>
+                        <select onChange={(e) => setValue("gender" , e.target.value)} className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200'>
+                            <option value="Male">Male</option>
+                            <option value="Femail">Femail</option>
+                            <option value="Both">Both</option>
                         </select>
                     </div>
                     <div className='flex flex-col gap-1.5 w-full'>
                         <label className='font-medium text-gray-500 text-[18px]' htmlFor="">Industry</label>
-                        <select className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' value="">
+                        <select onChange={(e) => setValue("industry" , e.target.value)} className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' value="">
                             {
                                 industryTypes.map((item, idx) => <option key={idx}>{item.name}</option>)
                             }
@@ -91,7 +115,7 @@ const PostNewJob = () => {
                 <div className='flex flex-col gap-4 md:flex-row items-center'>
                     <div className='flex flex-col gap-1.5 w-full'>
                         <label className='font-medium text-gray-500 text-[18px]' htmlFor="">Application Dadline</label>
-                        <input className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" placeholder='21-01-2005' />
+                        <input {...register("applicationDadeline")} className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" placeholder='' />
                     </div>
                 </div>
 
@@ -99,21 +123,21 @@ const PostNewJob = () => {
                 <div className='flex flex-col gap-4 md:flex-row items-center'>
                     <div className='flex flex-col gap-1.5 w-full'>
                         <label className='font-medium text-gray-500 text-[18px]' htmlFor="">Description</label>
-                        <textarea className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' placeholder='Lorem ipsum dolor sit amet consectetur adipisicing elit. A totam corporis expedita earum maiores nobis sed necessitatibus labore minima ex aliquam ipsam dolorum rerum veniam, ad asperiores amet excepturi dignissimos!' name="" id=""></textarea>
+                        <textarea onChange={(e) => setValue("description" , e.target.value)} className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200 min-h-[150px]' placeholder='' name="" id=""></textarea>
                     </div>
                 </div>
                 {/* Key Responsibilities */}
                 <div className='flex flex-col gap-4 md:flex-row items-center'>
                     <div className='flex flex-col gap-1.5 w-full'>
                         <label className='font-medium text-gray-500 text-[18px]' htmlFor="">Key Responsibilities</label>
-                        <textarea className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' placeholder='Lorem ipsum dolor sit amet consectetur adipisicing elit. A totam corporis expedita earum maiores nobis sed necessitatibus labore minima ex aliquam ipsam dolorum rerum veniam, ad asperiores amet excepturi dignissimos!' name="" id=""></textarea>
+                        <textarea {...register("keyResponsibilitie")} onChange={(e) => setValue("keyResponsibilitie" , e.target.value)} className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200 min-h-[150px]' placeholder='' name="" id=""></textarea>
                     </div>
                 </div>
                 {/* Skill & Experience */}
                 <div className='flex flex-col gap-4 md:flex-row items-center'>
                     <div className='flex flex-col gap-1.5 w-full'>
                         <label className='font-medium text-gray-500 text-[18px]' htmlFor="">Skill & Experience</label>
-                        <textarea className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' placeholder='Lorem ipsum dolor sit amet consectetur adipisicing elit. A totam corporis expedita earum maiores nobis sed necessitatibus labore minima ex aliquam ipsam dolorum rerum veniam, ad asperiores amet excepturi dignissimos!' name="" id=""></textarea>
+                        <textarea onChange={(e) => setValue("skillExperience" , e.target.value)} className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200 min-h-[150px]' placeholder='' name="" id=""></textarea>
                     </div>
                 </div>
                 <button className='bg-blue-600 font-bold text-white text-xl px-10 mt-10 py-4 rounded-md hover:bg-blue-400 duration-500'>Post</button>

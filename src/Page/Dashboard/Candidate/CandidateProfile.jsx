@@ -86,7 +86,7 @@ const CandidateProfile = () => {
       return Swal.fire({
         title: "Faild!",
         text: finalUpdateEmail.message,
-        icon: "success"
+        icon: "error"
       });
     }
 

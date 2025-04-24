@@ -25,40 +25,44 @@ import PostNewArtical from './Page/Dashboard/Admin/PostNewArtical.jsx'
 import ManageAllArticals from './Page/Dashboard/Admin/ManageAllArticals.jsx'
 import AuthContextProvider from './Context/Auth/AuthContextProvider.jsx'
 import UpdateUser from './Page/Dashboard/Admin/UpdateUser.jsx'
+import { Provider } from 'react-redux'
+import store from './Redux/store.js'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <AuthContextProvider>
-      <BrowserRouter>
-        <Routes>
-          {/* Website Ui */}
-          <Route element={<App />}>
-            <Route index element={<Home />} />
-            <Route path='/login' element={<LogIn />} />
-            <Route path='/singUp' element={<SingUp />} />
-            <Route path='/jobDetails' element={<JobDetails />} />
-            <Route path='/ariicleDes' element={<ArticlesDescription />} />
-            <Route path='/alljobs' element={<AllJobs />} />
-          </Route>
-          {/* Dashboard Ui */}
-          <Route path='/dashboard' element={<Layout />}>
-            <Route index element={<DashboardHome />} />
-            <Route path='candifateProfile/:id' element={<CandidateProfile />} />
-            <Route path='createCompany' element={<CreateCompany />} />
-            <Route path='CandidateAppliedAllJobs' element={<AllAppliedJobs />} />
-            <Route path='appliedJobs' element={<AppliedJobs />} />
-            <Route path='candidateBookmark' element={<CandidateBookmark />} />
-            <Route path='postJob' element={<PostNewJob />} />
-            <Route path='manageJob' element={<ManageJobs />} />
-            <Route path='resumi/:id' element={<CandidateResumi />} />
-            <Route path='manageAllJobs' element={<ManageAllJobs />} />
-            <Route path='manageAllUsers' element={<ManageAllUsers />} />
-            <Route path='postArticals' element={<PostNewArtical />} />
-            <Route path='manageArticals' element={<ManageAllArticals />} />
-            <Route path='updateUser/:id' element={<UpdateUser/>}/>
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </AuthContextProvider>
+    <Provider store={store}>
+      <AuthContextProvider>
+        <BrowserRouter>
+          <Routes>
+            {/* Website Ui */}
+            <Route element={<App />}>
+              <Route index element={<Home />} />
+              <Route path='/login' element={<LogIn />} />
+              <Route path='/singUp' element={<SingUp />} />
+              <Route path='/jobDetails' element={<JobDetails />} />
+              <Route path='/ariicleDes' element={<ArticlesDescription />} />
+              <Route path='/alljobs' element={<AllJobs />} />
+            </Route>
+            {/* Dashboard Ui */}
+            <Route path='/dashboard' element={<Layout />}>
+              <Route index element={<DashboardHome />} />
+              <Route path='candifateProfile/:id' element={<CandidateProfile />} />
+              <Route path='createCompany' element={<CreateCompany />} />
+              <Route path='CandidateAppliedAllJobs' element={<AllAppliedJobs />} />
+              <Route path='appliedJobs' element={<AppliedJobs />} />
+              <Route path='candidateBookmark' element={<CandidateBookmark />} />
+              <Route path='postJob' element={<PostNewJob />} />
+              <Route path='manageJob' element={<ManageJobs />} />
+              <Route path='resumi/:id' element={<CandidateResumi />} />
+              <Route path='manageAllJobs' element={<ManageAllJobs />} />
+              <Route path='manageAllUsers' element={<ManageAllUsers />} />
+              <Route path='postArticals' element={<PostNewArtical />} />
+              <Route path='manageArticals' element={<ManageAllArticals />} />
+              <Route path='updateUser/:id' element={<UpdateUser />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </AuthContextProvider>
+    </Provider>
   </StrictMode>,
 )

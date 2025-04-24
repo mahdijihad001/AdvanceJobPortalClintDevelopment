@@ -5,16 +5,19 @@ import { FaRegUser } from 'react-icons/fa'
 import { IoBagHandle } from 'react-icons/io5'
 import BaseUrl from '../../Utils/BaseUrl/BaseUrl'
 import Swal from 'sweetalert2'
+import { useRegisterUserMutation } from '../../Redux/Services/AuthApi/AuthApi'
 
 
 const SingUp = () => {
+
+    const [registerUser, { isLoading, error }] = useRegisterUserMutation();
 
     const [role, setRole] = useState("candidate");
 
     const FormData = async (e) => {
         e.preventDefault();
-
         const form = e.target;
+
         const username = form.username.value;
         const email = form.email.value;
         const password = form.password.value;
@@ -23,27 +26,27 @@ const SingUp = () => {
             username, email, password, role
         };
 
-        const result = await fetch(`${BaseUrl()}/user/register`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(user)
-        });
+        const res = await registerUser(user);
 
-        const finalResult = await result.json();
-
-        if (finalResult.status) {
-            Swal.fire({
-                title: finalResult.message,
-                icon: "success",
-                draggable: true
+        if (res?.data?.status) {
+            return Swal.fire({
+                title: "success",
+                text: res?.data?.message,
+                icon: "success"
             });
-        }else{
-            Swal.fire({
-                title: finalResult.message,
-                icon: "error",
-                draggable: true
+        } else if (res?.error?.data?.message) {
+            return Swal.fire({
+                title: "Faild",
+                text: res?.error?.data?.message,
+                icon: "error"
+            });
+        }
+
+        else {
+            return Swal.fire({
+                title: "Faild",
+                text: "Something went wrond...! Please try again.",
+                icon: "error"
             });
         }
 
@@ -78,7 +81,7 @@ const SingUp = () => {
                             <input name='password' className='w-full p-3.5 mt-2.5 bg-[#f0f5f7] rounded-md border-blue-300 focus:to-blue-300 outline-blue-300' type="password" placeholder='Password' required />
                         </div>
                         <div className='flex items-center justify-center mt-7'>
-                            <button className='bg-[#1967d2] w-full py-3 rounded-md font-bold text-white text-xl hover:bg-[#6e86a8] duration-500'>Sing Up</button>
+                            <button className='bg-[#1967d2] w-full py-3 rounded-md font-bold text-white text-xl hover:bg-[#6e86a8] duration-500'> {isLoading ? "Loading..." : "Sing Up"}</button>
                         </div>
                     </form>
                     <div className='p-4'>

@@ -13,7 +13,7 @@ export const AuthApi = createApi({
             query : (registerData) =>({
                 url : "/register",
                 method : "POST",
-                body : JSON.stringify(registerData)
+                body : registerData,
             })
         }),
         logInUser : builder.mutation({

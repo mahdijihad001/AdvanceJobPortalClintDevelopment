@@ -1,16 +1,15 @@
 import React, { useState } from 'react'
 import LogInImage from "../../assets/banner-img-1.png"
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import { FaRegUser } from 'react-icons/fa'
 import { IoBagHandle } from 'react-icons/io5'
-import BaseUrl from '../../Utils/BaseUrl/BaseUrl'
 import Swal from 'sweetalert2'
 import { useRegisterUserMutation } from '../../Redux/Services/AuthApi/AuthApi'
 
 
 const SingUp = () => {
-
-    const [registerUser, { isLoading, error }] = useRegisterUserMutation();
+    const navigate = useNavigate();
+    const [registerUser, { isLoading }] = useRegisterUserMutation();
 
     const [role, setRole] = useState("candidate");
 
@@ -27,13 +26,14 @@ const SingUp = () => {
         };
 
         const res = await registerUser(user);
-
         if (res?.data?.status) {
-            return Swal.fire({
+            Swal.fire({
                 title: "success",
                 text: res?.data?.message,
                 icon: "success"
-            });
+            }
+            );
+            navigate("/login")
         } else if (res?.error?.data?.message) {
             return Swal.fire({
                 title: "Faild",
@@ -41,7 +41,6 @@ const SingUp = () => {
                 icon: "error"
             });
         }
-
         else {
             return Swal.fire({
                 title: "Faild",

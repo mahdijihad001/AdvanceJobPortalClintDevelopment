@@ -8,11 +8,11 @@ import { RiFileList2Fill } from 'react-icons/ri'
 import { PiReadCvLogoFill } from 'react-icons/pi'
 import DashboardNav from './DashboardNav'
 import { CreateAuthContext } from '../../../Context/Auth/CreateAuthContext'
+import { useSelector } from 'react-redux'
 
 const Layout = () => {
+    const user = useSelector((state) => state.Auth.user);
 
-    const {user} = useContext(CreateAuthContext);
-    
     const candidate = [
         { name: "Dashboard", icon: FaHome, path: "/dashboard" },
         { name: "Update Profile", icon: FaUser, path: user?._id ?  `/dashboard/candifateProfile/${user?._id}` : "#" },
@@ -39,14 +39,7 @@ const Layout = () => {
         { name: "Manage All Atricles", icon: FaArtstation, path: "/dashboard/manageArticals" },
     ];
 
-    // const userRole = user?.role;
-    // const [userRole , setUserRole] = useState(user?.role);
-    const userRole = "employe";
-    // const userRole = "admin";
-
-    // useEffect( () =>{
-    //     setUserRole(user?.role)
-    // } ,[user])
+    const userRole = user?.role;
 
     const isAdmin = userRole === "admin" ? [...admin] : userRole === "employe" ? [...employe] : [...candidate];
 

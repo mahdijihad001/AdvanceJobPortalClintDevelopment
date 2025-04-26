@@ -3,12 +3,18 @@ import LogInImage from "../../assets/banner-img-1.png"
 import { Link, useNavigate } from 'react-router'
 import BaseUrl from './../../Utils/BaseUrl/BaseUrl';
 import Swal from 'sweetalert2';
+import { useLogInUserMutation } from '../../Redux/Services/AuthApi/AuthApi';
+import { setInUser } from '../../Redux/Services/AuthSlice/AuthSlice';
+import { useDispatch } from 'react-redux';
 
 const LogIn = () => {
 
+    const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    const [logInUser, { isLoading }] = useLogInUserMutation();
     const HandleLogIn = async (e) => {
+
         e.preventDefault();
         const form = e.target;
 
@@ -17,33 +23,28 @@ const LogIn = () => {
 
         const user = { username, password };
 
-        const result = await fetch(`${BaseUrl()}/user/login`, {
-            method: "POST",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(user)
-        });
-
-        const finalResult = await result.json();
-
-        if (finalResult?.status) {
+        const res = await logInUser(user);
+        if (res?.data?.status) {
             Swal.fire({
                 title: "Success",
-                text: finalResult?.message,
+                text: res?.data?.message,
                 icon: "success"
             });
-            localStorage.setItem("user", JSON.stringify(finalResult.data?.user));
-            navigate("/")
+            navigate("/");
+            dispatch(setInUser({user : res?.data?.data?.user}));
+        } else if (res?.error?.data?.message) {
+            Swal.fire({
+                title: "Faild",
+                text: res?.error?.data?.message,
+                icon: "error"
+            });
         } else {
             Swal.fire({
                 title: "Faild",
-                text: finalResult?.message,
+                text: "Something went wrong! Please ty again...",
                 icon: "error"
             });
         }
-
     }
 
     return (
@@ -70,12 +71,11 @@ const LogIn = () => {
                             <Link className='text-blue-500'>Forgot password?</Link>
                         </div>
                         <div className='flex items-center justify-center'>
-                            <button className='bg-[#1967d2] w-full py-3 rounded-md font-bold text-white text-xl hover:bg-[#6e86a8] duration-500'>Log In</button>
+                            <button className='bg-[#1967d2] w-full py-3 rounded-md font-bold text-white text-xl hover:bg-[#6e86a8] duration-500'>{isLoading ? "Loading..." : "Log In"}</button>
                         </div>
                     </form>
                     <div className='p-4'>
                         <h2 className='font-medium text-[18px] leading-5 text-[#696969] text-center'>Don't have an account? <Link className='font-bold' to={"/singUp"}>Signup</Link></h2>
-
                     </div>
                 </div>
             </div>

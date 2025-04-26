@@ -3,12 +3,14 @@ import { useForm } from 'react-hook-form';
 import { CreateAuthContext } from './../../../Context/Auth/CreateAuthContext';
 import BaseUrl from './../../../Utils/BaseUrl/BaseUrl';
 import Swal from 'sweetalert2';
+import { useSelector } from 'react-redux';
+import { usePostJobMutation } from '../../../Redux/Services/Job/JobApi';
 
 
 const PostNewJob = () => {
 
-    const { user } = useContext(CreateAuthContext)
-
+    const user = useSelector((state) => state?.Auth.user);
+    const [postJob, { isLoading }] = usePostJobMutation();
     const positions = [
         { department: "Accounting / Finance", openPositions: 2 },
         { department: "Marketing", openPositions: 86 },
@@ -38,38 +40,40 @@ const PostNewJob = () => {
     const {
         register,
         handleSubmit,
-        formState: { errors },
         setValue,
-        watch
     } = useForm();
 
 
-    const HandleCreateJob = async (data) => {
-        console.log(data)
-        const result = await fetch(`${BaseUrl()}/job/create`, { method: "POST", headers: { "Content-type": "application/json" }, body: JSON.stringify(data) });
-        const findlResult = await result.json();
+    useEffect(() => {
+        if (user?._id) {
+            setValue("authore", user?._id)
+        }
+    }, [user, setValue]);
 
-        if (findlResult.status) {
-            return Swal.fire({
-                title: "Success!",
-                text: findlResult.message,
+
+    const HandleCreateJob = async (data) => {
+        const res = await postJob(data);
+        if (res?.data?.status) {
+            Swal.fire({
+                title: "Good job!",
+                text: res?.data.message,
                 icon: "success"
-            })
-        }else{
+            });
+        } else if (res?.error) {
             Swal.fire({
                 title: "Faild!",
-                text: findlResult.message,
+                text: res?.error.data.message,
                 icon: "error"
-            })
+            });
+        } else {
+            Swal.fire({
+                title: "Faild!",
+                text: "Something went wrong! Please try again.",
+                icon: "error"
+            });
         }
+    };
 
-    }
-
-
-
-    useEffect(() => {
-        setValue("authore", user?._id);
-    }, [user]);
 
     return (
         <div className='p-2 md:p-5'>
@@ -128,7 +132,7 @@ const PostNewJob = () => {
                     </div>
                     <div className='flex flex-col gap-1.5 w-full'>
                         <label className='font-medium text-gray-500 text-[18px]' htmlFor="">Industry</label>
-                        <select onChange={(e) => setValue("industry", e.target.value)} className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' value="">
+                        <select onChange={(e) => setValue("industry", e.target.value)} className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200'>
                             <option value="">Select Industry</option>
                             {
                                 industryTypes.map((item, idx) => <option key={idx}>{item.name}</option>)
@@ -166,7 +170,7 @@ const PostNewJob = () => {
                         <textarea required onChange={(e) => setValue("skillExperience", e.target.value)} className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200 min-h-[150px]' placeholder='' name="" id=""></textarea>
                     </div>
                 </div>
-                <button className='bg-blue-600 font-bold text-white text-xl px-10 mt-10 py-4 rounded-md hover:bg-blue-400 duration-500'>Post</button>
+                <button className='bg-blue-600 font-bold text-white text-xl px-10 mt-10 py-4 rounded-md hover:bg-blue-400 duration-500'>{isLoading ? "Loading..." : "Post"}</button>
             </form>
         </div>
     )

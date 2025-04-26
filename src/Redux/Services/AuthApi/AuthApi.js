@@ -20,7 +20,7 @@ export const AuthApi = createApi({
             query : (loginData) => ({
                 url : "/login",
                 method : "POST",
-                body : JSON.stringify(loginData)
+                body : loginData
             })
         })
     })

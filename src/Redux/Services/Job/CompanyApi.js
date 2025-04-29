@@ -3,22 +3,24 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import BaseUrl from './../../../Utils/BaseUrl/BaseUrl';
 
 const CompanyApi = createApi({
-    reducerPath : "ConpanyApi",
+    reducerPath : "CompanyApi",
     tagTypes : ["CompanyApi"],
-    baseQuery : fetchBaseQuery({baseUrl : `${BaseUrl()}`}),
+    baseQuery : fetchBaseQuery({baseUrl : `${BaseUrl()}/company`}),
     endpoints : (builder) =>({
         createCompany : builder.mutation({
             query :  ({id , data}) =>({
-                url : ``,
+                url : `/update/${id}`,
                 method : "PATCH",
                 body : data
-            })
+            }),
+            invalidatesTags : (result , error , id) => [{type : "CompanyApi" , id}] 
         }),
         getCompany : builder.query({
             query : (id) =>({
-                url : ``,
+                url : `/single/${id}`,
                 method : "GET"
-            })
+            }),
+            providesTags : (result , error , id) => [{type : "CompanyApi" , id}]
         })
     })
 });

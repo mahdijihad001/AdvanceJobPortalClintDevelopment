@@ -1,16 +1,46 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import demoProfile from "../../../assets/demoProfile.png"
+import { useCreateCompanyMutation } from '../../../Redux/Services/Job/CompanyApi';
+import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
 
 const CreateCompany = () => {
+    const dispatch = useDispatch();
+    const [createCompany, { isLoading }] = useCreateCompanyMutation();
+    const { register, handleSubmit, setValue } = useForm();
+
+    const user = useSelector((state) => state.Auth?.user);
 
     const [image, setimage] = useState();
 
-    const HandleShowImage = (e) => {
+    const HandleShowImage = async (e) => {
         const file = e.target.files[0];
         if (file) {
             setimage(URL.createObjectURL(file));
         }
+        if (!file) return
+
+        const data = new FormData();
+        data.append("file", file);
+        data.append("upload_preset", "jobportal_cloud_image_host");
+        data.append("cloud_name", "de8jq6747");
+
+        const getImageUrl = await fetch(`https://api.cloudinary.com/v1_1/de8jq6747/image/upload`, { method: "POST", body: data })
+        const result = await getImageUrl.json();
+        setValue("image", result?.url);
     };
+
+    useEffect(() => {
+        setValue("authore", user?._id)
+    }, [user]);
+
+    const HandleCreateCompany = async (data) => {
+        console.log(data);
+        console.log(user?._id);
+        const result = await createCompany({ id: user?._id, data: data });
+
+        console.log(result);
+    }
 
     return (
         <div className='p-2 md:p-5'>
@@ -19,7 +49,7 @@ const CreateCompany = () => {
             </div>
             {/* -------------------- */}
             {/* Create Company */}
-            <form className='px-5 py-10 shadow bg-white rounded-[10px] mt-[40px] mb-[70px]'>
+            <form onSubmit={handleSubmit(HandleCreateCompany)} className='px-5 py-10 shadow bg-white rounded-[10px] mt-[40px] mb-[70px]'>
                 <div className=''>
                     <h1 className='text-2xl font-medium text-gray-500'>Create Company</h1>
                 </div>
@@ -37,37 +67,37 @@ const CreateCompany = () => {
                     <div className='flex flex-col gap-4 md:flex-row items-center'>
                         <div className='flex flex-col gap-1.5 w-full'>
                             <label className='font-medium text-gray-500 text-[18px]' htmlFor="">Company Name</label>
-                            <input className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" placeholder='Inovation' />
+                            <input {...register("companyName")} className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" placeholder='Inovation' />
                         </div>
                         <div className='flex flex-col gap-1.5 w-full'>
                             <label className='font-medium text-gray-500 text-[18px]' htmlFor="">Company Email</label>
-                            <input className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" placeholder='inovation@gmail.com' />
+                            <input {...register("companyEmail")} className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" placeholder='inovation@gmail.com' />
                         </div>
                     </div>
                     {/* Company Phone& Company website */}
                     <div className='flex flex-col gap-4 md:flex-row items-center'>
                         <div className='flex flex-col gap-1.5 w-full'>
                             <label className='font-medium text-gray-500 text-[18px]' htmlFor="">Company Phone No</label>
-                            <input className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="number" placeholder='0177212121' />
+                            <input {...register("companyPhoneNo")} className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="number" placeholder='0177212121' />
                         </div>
                         <div className='flex flex-col gap-1.5 w-full'>
                             <label className='font-medium text-gray-500 text-[18px]' htmlFor="">Company Website</label>
-                            <input className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" placeholder='www.inovation.com' />
+                            <input {...register("companyWebsite")} className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" placeholder='www.inovation.com' />
                         </div>
                     </div>
                     {/* Est. Since & Team Size */}
                     <div className='flex flex-col gap-4 md:flex-row items-center'>
                         <div className='flex flex-col gap-1.5 w-full'>
                             <label className='font-medium text-gray-500 text-[18px]' htmlFor="">Est. Since</label>
-                            <input className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="number" placeholder='05-08-2011' />
+                            <input {...register("estSince")} className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" placeholder='05-08-2011' />
                         </div>
                         <div className='flex flex-col gap-1.5 w-full'>
                             <label className='font-medium text-gray-500 text-[18px]' htmlFor="">Team Size</label>
-                            <input className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" placeholder='Team Size' />
+                            <input {...register("teamSize")} className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" placeholder='Team Size' />
                         </div>
                     </div>
                 </div>
-                <button className='bg-blue-600 font-bold text-white text-xl px-10 mt-10 py-4 rounded-md hover:bg-blue-400 duration-500'>Post</button>
+                <button className='bg-blue-600 font-bold text-white text-xl px-10 mt-10 py-4 rounded-md hover:bg-blue-400 duration-500'>{isLoading ? "Loading..." : "Post"}</button>
 
             </form>
 

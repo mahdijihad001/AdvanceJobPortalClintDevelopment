@@ -1,8 +1,7 @@
 import React from 'react'
 
-const CompanySocialMediaForm = ({id}) => {
+const CompanySocialMediaForm = () => {
 
-    console.log(id)
 
 
     

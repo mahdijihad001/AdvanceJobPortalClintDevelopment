@@ -21,11 +21,27 @@ const CompanyApi = createApi({
                 method : "GET"
             }),
             providesTags : (result , error , id) => [{type : "CompanyApi" , id}]
+        }),
+        updateCompanySocial : builder.mutation({
+            query : ({id , data}) =>({
+                url : `/social/${id}`,
+                method : "PATCH",
+                body : data
+            }),
+            invalidatesTags : (result , error , id) => [{type : "CompanyApi" , id}]
+        }),
+        updateCompanyAddress : builder.mutation({
+            query : ({id , data}) =>({
+                url : `/address/${id}`,
+                method : "PATCH",
+                body : data
+            }),
+            invalidatesTags : (result , error , id) => [{type : "CompanyApi" , id}]
         })
     })
 });
 
 
-export const {useCreateCompanyMutation , useGetCompanyQuery} = CompanyApi;
+export const {useCreateCompanyMutation , useGetCompanyQuery , useUpdateCompanySocialMutation , useUpdateCompanyAddressMutation} = CompanyApi;
 
 export default CompanyApi

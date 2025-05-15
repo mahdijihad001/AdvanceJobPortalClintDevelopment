@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import demoProfile from "../../../assets/demoProfile.png"
-import { useCreateCompanyMutation } from '../../../Redux/Services/Job/CompanyApi';
+import { useCreateCompanyMutation, useGetCompanyQuery } from '../../../Redux/Services/Job/CompanyApi';
 import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
@@ -8,10 +8,16 @@ import CompanySocialMediaForm from './CompanySocialMediaForm/CompanySocialMediaF
 import CompanyAddressForm from './CompanyAddressForm/CompanyAddressForm';
 
 const CreateCompany = () => {
+    const user = useSelector((state) => state.Auth?.user);
     const [createCompany, { isLoading }] = useCreateCompanyMutation();
+
+    const {data , isFetching} = useGetCompanyQuery(user?._id);
+
+    const companyData = data?.data?.company;
+
     const { register, handleSubmit, setValue } = useForm();
 
-    const user = useSelector((state) => state.Auth?.user);
+    
 
     const [image, setimage] = useState();
 
@@ -86,33 +92,33 @@ const CreateCompany = () => {
                     <div className='flex flex-col gap-4 md:flex-row items-center'>
                         <div className='flex flex-col gap-1.5 w-full'>
                             <label className='font-medium text-gray-500 text-[18px]' htmlFor="">Company Name</label>
-                            <input {...register("companyName")} className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" required />
+                            <input defaultValue={companyData?.companyName} {...register("companyName")} className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" required />
                         </div>
                         <div className='flex flex-col gap-1.5 w-full'>
                             <label className='font-medium text-gray-500 text-[18px]' htmlFor="">Company Email</label>
-                            <input {...register("companyEmail")} className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="email" required />
+                            <input value={user?.email} {...register("companyEmail")} className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="email" required />
                         </div>
                     </div>
                     {/* Company Phone& Company website */}
                     <div className='flex flex-col gap-4 md:flex-row items-center'>
                         <div className='flex flex-col gap-1.5 w-full'>
                             <label className='font-medium text-gray-500 text-[18px]' htmlFor="">Company Phone No</label>
-                            <input {...register("companyPhoneNo")} className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="tel" required />
+                            <input defaultValue={companyData?.companyPhoneNo} {...register("companyPhoneNo")} className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="tel" required />
                         </div>
                         <div className='flex flex-col gap-1.5 w-full'>
                             <label className='font-medium text-gray-500 text-[18px]' htmlFor="">Company Website</label>
-                            <input {...register("companyWebsite")} className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" required />
+                            <input defaultValue={companyData?.companyWebsite} {...register("companyWebsite")} className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" required />
                         </div>
                     </div>
                     {/* Est. Since & Team Size */}
                     <div className='flex flex-col gap-4 md:flex-row items-center'>
                         <div className='flex flex-col gap-1.5 w-full'>
                             <label className='font-medium text-gray-500 text-[18px]' htmlFor="">Est. Since</label>
-                            <input {...register("estSince")} className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" required />
+                            <input defaultValue={companyData?.estSince} {...register("estSince")} className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" required />
                         </div>
                         <div className='flex flex-col gap-1.5 w-full'>
                             <label className='font-medium text-gray-500 text-[18px]' htmlFor="">Team Size</label>
-                            <input {...register("teamSize")} className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" required />
+                            <input defaultValue={companyData?.teamSize} {...register("teamSize")} className='bg-[#f0f5f7] border-[#f0f5f7] p-4 mt-1 rounded-md outline-blue-200' type="text" required />
                         </div>
                     </div>
                 </div>
@@ -123,12 +129,12 @@ const CreateCompany = () => {
 
             {/* -------------------------- */}
             {/* Social Network */}
-            <CompanySocialMediaForm id={user?._id} />
+            <CompanySocialMediaForm/>
 
             {/* -------------------------------- */}
             {/* Contact information */}
 
-            <CompanyAddressForm id={user?._id} />
+            <CompanyAddressForm />
 
         </div>
     )

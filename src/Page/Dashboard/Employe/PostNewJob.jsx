@@ -5,12 +5,14 @@ import BaseUrl from './../../../Utils/BaseUrl/BaseUrl';
 import Swal from 'sweetalert2';
 import { useSelector } from 'react-redux';
 import { usePostJobMutation } from '../../../Redux/Services/Job/JobApi';
+import { useGetCompanyQuery } from '../../../Redux/Services/Job/CompanyApi';
 
 
 const PostNewJob = () => {
 
     const user = useSelector((state) => state?.Auth.user);
     const [postJob, { isLoading }] = usePostJobMutation();
+
     const positions = [
         { department: "Accounting / Finance", openPositions: 2 },
         { department: "Marketing", openPositions: 86 },

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import LogInImage from "../../assets/banner-img-1.png"
 import { Link, useNavigate } from 'react-router'
 import BaseUrl from './../../Utils/BaseUrl/BaseUrl';
@@ -11,6 +11,15 @@ const LogIn = () => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    
+    useEffect( () =>{
+        const GetData = async() =>{
+            const user = await fetch(`${BaseUrl()}/user/find`);
+            const result = await user.json();
+            console.log(result);
+        }
+        GetData();
+    } ,[])
 
     const [logInUser, { isLoading }] = useLogInUserMutation();
     const HandleLogIn = async (e) => {

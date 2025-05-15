@@ -5,9 +5,12 @@ import { FaRegUser } from 'react-icons/fa'
 import { IoBagHandle } from 'react-icons/io5'
 import Swal from 'sweetalert2'
 import { useRegisterUserMutation } from '../../Redux/Services/AuthApi/AuthApi'
+import BaseUrl from '../../Utils/BaseUrl/BaseUrl'
 
 
 const SingUp = () => {
+    const url = BaseUrl();
+    console.log(url);
     const navigate = useNavigate();
     const [registerUser, { isLoading }] = useRegisterUserMutation();
 
@@ -16,16 +19,15 @@ const SingUp = () => {
     const FormData = async (e) => {
         e.preventDefault();
         const form = e.target;
-
         const username = form.username.value;
         const email = form.email.value;
         const password = form.password.value;
-
         const user = {
             username, email, password, role
         };
 
         const res = await registerUser(user);
+        console.log(res);
         if (res?.data?.status) {
             Swal.fire({
                 title: "success",
